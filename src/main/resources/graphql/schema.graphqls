@@ -1,0 +1,195 @@
+# GraphQL Schema Definition
+
+# Type definition for City
+type City {
+    # IATA code of the city
+    iataCode: String!
+    # Name of the airport
+    airportName: String!
+    # Country where the city is located
+    country: String!
+}
+
+# Type definition for Flight
+type Flight {
+    # Unique identifier for the flight
+    id: ID!
+    # Flight number
+    flightNumber: String!
+    # Origin city of the flight
+    origin: City!
+    # Destination city of the flight
+    destination: City!
+    # Price of the flight
+    price: Float!
+    # Tax percentage applied to the flight
+    taxPercentage: Float!
+    # Surcharge percentage applied to the flight
+    surchargePercentage: Float!
+    # Departure date of the flight (format: YYYY-MM-DD)
+    departureDate: String!
+    # Arrival date of the flight (format: YYYY-MM-DD)
+    arrivalDate: String!
+    # Departure time of the flight (format: HH:mm)
+    departureTime: String!
+    # Arrival time of the flight (format: HH:mm)
+    arrivalTime: String!
+    # Type of the flight (e.g., National, International)
+    flightType: FlightType!
+    # Type of the airplane used for the flight
+    airplaneType: AirplaneType!
+    # Status of the flight (e.g., Scheduled, Completed, Cancelled)
+    status: Status!
+}
+
+# Type definition for FlightType
+type FlightType {
+    # Unique identifier for the flight type
+    id: ID!
+    # Name of the flight type (e.g., National, International)
+    name: String!
+}
+
+type AirplaneFamily {
+    # Unique identifier for the airplane family
+    id: ID!
+    name: String!
+}
+
+# Type definition for AirplaneType
+type AirplaneType {
+    # Unique identifier for the airplane type
+    id: String!
+    # Type of the airplane
+    type: Type!
+    # Maximum number of seats in the airplane
+    maxSeats: Int!
+    # Seat distribution in the airplane (e.g., "2-4-2", "3-3-3")
+    seatsDistribution: String!
+}
+
+# Type definition for Type
+type Type {
+    # Unique identifier for the type
+    id: ID!
+    # Name of the type (e.g., National, International)
+    name: String!
+}
+
+# Type definition for Status
+type Status {
+    # Unique identifier for the status
+    id: ID!
+    # Name of the status (e.g., Scheduled, Completed, Cancelled)
+    statusName: String!
+}
+
+# Query type for fetching information
+type Query {
+    # Fetch all airplane types
+    getAllAirplaneTypes: [AirplaneType!]!
+    # Fetch an airplane type by its ID
+    getAirplaneTypeById(id: String!): AirplaneType
+
+    # Fetch all flights
+    getAllFlights: [Flight!]!
+    # Fetch a flight by its ID
+    getFlightById(id: ID!): Flight
+    # Fetch all airplane families
+    getAllFamilies: [AirplaneFamily]
+}
+
+# Mutation type for creating, updating, and deleting data
+type Mutation {
+    # Create a new flight and return it
+    createFlight(
+        # Flight number
+        flightNumber: String!
+        # IATA code of the origin city
+        originIata: String!
+        # IATA code of the destination city
+        destinationIata: String!
+        # Departure date (format: YYYY-MM-DD)
+        departureDate: String!
+        # Arrival date (format: YYYY-MM-DD)
+        arrivalDate: String!
+        # Departure time (format: HH:mm)
+        departureTime: String!
+        # Arrival time (format: HH:mm)
+        arrivalTime: String!
+        # Price of the flight
+        price: Float!
+        # Tax percentage
+        taxPercentage: Float!
+        # Surcharge percentage
+        surchargePercentage: Float!
+        # ID of the flight type
+        flightTypeId: ID!
+        # ID of the airplane type
+        airplaneTypeId: ID!
+        # ID of the flight status
+        statusId: ID!
+    ): Flight!
+
+    # Update an existing flight and return it
+    updateFlight(
+        # ID of the flight to update
+        id: ID!
+        # Updated flight number
+        flightNumber: String
+        # Updated IATA code of the origin city
+        originIata: String
+        # Updated IATA code of the destination city
+        destinationIata: String
+        # Updated departure date (format: YYYY-MM-DD)
+        departureDate: String
+        # Updated arrival date (format: YYYY-MM-DD)
+        arrivalDate: String
+        # Updated departure time (format: HH:mm)
+        departureTime: String
+        # Updated arrival time (format: HH:mm)
+        arrivalTime: String
+        # Updated price
+        price: Float
+        # Updated tax percentage
+        taxPercentage: Float
+        # Updated surcharge percentage
+        surchargePercentage: Float
+        # Updated ID of the flight type
+        flightTypeId: ID
+        # Updated ID of the airplane type
+        airplaneTypeId: ID
+        # Updated ID of the flight status
+        statusId: ID
+    ): Flight!
+
+    # Delete a flight by its ID and return a boolean indicating success
+    deleteFlight(id: ID!): Boolean!
+
+    # Create a new airplane type and return it
+    createAirplaneType(
+        # ID of the airplane type
+        id: String!
+        # Type of the airplane
+        typeId: Int!
+        # Maximum number of seats
+        maxSeats: Int!
+        # Seat distribution (e.g., "2-4-2", "3-3-3")
+        seatsDistribution: String!
+    ): AirplaneType!
+
+    # Update an existing airplane type and return it
+    updateAirplaneType(
+        # ID of the airplane type to update
+        id: String!
+        # Updated ID of the type
+        typeId: ID
+        # Updated maximum number of seats
+        maxSeats: Int
+        # Updated seat distribution
+        seatsDistribution: String
+    ): AirplaneType!
+
+    # Delete an airplane type by its ID and return a boolean indicating success
+    deleteAirplaneType(id: String!): Boolean!
+}
